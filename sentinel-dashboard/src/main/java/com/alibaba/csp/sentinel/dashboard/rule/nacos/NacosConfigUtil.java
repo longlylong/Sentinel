@@ -16,6 +16,7 @@
 package com.alibaba.csp.sentinel.dashboard.rule.nacos;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.RuleEntity;
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.SystemRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.util.JSONUtils;
 import com.alibaba.csp.sentinel.slots.block.Rule;
 import com.alibaba.csp.sentinel.util.AssertUtil;
@@ -37,6 +38,8 @@ public final class NacosConfigUtil {
     public static final String SYSTEM_DATA_ID_POSTFIX = "-system-rules";
     public static final String PARAM_FLOW_DATA_ID_POSTFIX = "-param-flow-rules";
     public static final String AUTHORITY_DATA_ID_POSTFIX = "-authority-rules";
+
+    public static final String DASHBOARD_POSTFIX = "-dashboard";
 
     public static final String CLUSTER_MAP_DATA_ID_POSTFIX = "-cluster-map";
 
@@ -80,12 +83,23 @@ public final class NacosConfigUtil {
                 })
                 .collect(Collectors.toList());
 
+        String json;
+        if (rules.size() == 0) {
+            json = JSONUtils.toJSONString(ruleForApp);
+        } else {
+            if (rules.get(0) instanceof SystemRuleEntity) {
+                json = JSONUtils.toJSONString(rules);
+            } else {
+                json = JSONUtils.toJSONString(ruleForApp);
+            }
+        }
+
         // 存储，给微服务使用
         String dataId = genDataId(app, postfix);
         configService.publishConfig(
                 dataId,
                 NacosConfigUtil.GROUP_ID,
-                JSONUtils.toJSONString(ruleForApp)
+                json
         );
 
         // 存储，给控制台使用
