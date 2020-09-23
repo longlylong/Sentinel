@@ -49,6 +49,7 @@ app.service('DegradeService', ['$http', function ($http) {
   };
 
   this.checkRuleValid = function (rule) {
+      rule.statIntervalMs = 1000
       if (rule.resource === undefined || rule.resource === '') {
           alert('资源名称不能为空');
           return false;
