@@ -16,7 +16,6 @@
 package com.alibaba.csp.sentinel.dashboard.rule.nacos;
 
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.RuleEntity;
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.SystemRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.util.JSONUtils;
 import com.alibaba.csp.sentinel.slots.block.Rule;
 import com.alibaba.csp.sentinel.util.AssertUtil;
@@ -83,21 +82,21 @@ public final class NacosConfigUtil {
                 })
                 .collect(Collectors.toList());
 
-
         // 存储，给微服务使用
         String dataId = genDataId(app, postfix);
-        configService.publishConfig(
+        boolean micro = configService.publishConfig(
                 dataId,
                 NacosConfigUtil.GROUP_ID,
                 JSONUtils.toJSONString(ruleForApp)
         );
 
         // 存储，给控制台使用
-        configService.publishConfig(
+        boolean console = configService.publishConfig(
                 dataId + DASHBOARD_POSTFIX,
                 NacosConfigUtil.GROUP_ID,
                 JSONUtils.toJSONString(rules)
         );
+        System.out.println("setRuleStringToNacos: micro " + micro + ",console " + console);
     }
 
     /**

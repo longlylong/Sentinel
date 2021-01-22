@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Flow rule controller (v2).
+ * nacos Flow rule controller (v2).
  *
  * @author Eric Zhao
  * @since 1.4.0

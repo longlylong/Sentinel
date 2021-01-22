@@ -22,6 +22,7 @@ import com.alibaba.csp.sentinel.datasource.Converter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -122,12 +123,19 @@ public class NacosConfig {
         return s -> JSON.parseArray(s, GatewayFlowRuleEntity.class);
     }
 
+    @Value("${nacos-config.addr}")
+    String nacosAddr;
+    @Value("${nacos-config.psw}")
+    String nacosPsw;
+    @Value("${nacos-config.user}")
+    String nacosUser;
+
     @Bean
     public ConfigService nacosConfigService() throws Exception {
         Properties properties = new Properties();
-        properties.put("serverAddr", "localhost:8848");
-        properties.put("username", "nacos");
-        properties.put("password", "nacos");
+        properties.put("serverAddr", nacosAddr);
+        properties.put("username", nacosUser);
+        properties.put("password", nacosPsw);
         return ConfigFactory.createConfigService(properties);
     }
 }

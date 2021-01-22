@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Flow rule controller.
+ * memory Flow rule controller.
  *
  * @author leyou
  * @author Eric Zhao
